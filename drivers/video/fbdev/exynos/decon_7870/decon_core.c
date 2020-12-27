@@ -32,7 +32,9 @@
 #include <linux/seq_file.h>
 #include <linux/of_gpio.h>
 #include <linux/reboot.h>
-
+#ifdef CONFIG_STATE_NOTIFIER
+#include <linux/state_notifier.h>
+#endif
 #include <media/exynos_mc.h>
 #include <video/mipi_display.h>
 #include <media/v4l2-subdev.h>
@@ -1230,6 +1232,9 @@ static int decon_blank(int blank_mode, struct fb_info *info)
 		}
 		atomic_set(&decon->ffu_flag, 2);
 		break;
+#ifdef CONFIG_STATE_NOTIFIER
+		state_suspend();
+#endif
 	case FB_BLANK_UNBLANK:
 		DISP_SS_EVENT_LOG(DISP_EVT_UNBLANK, &decon->sd, ktime_set(0, 0));
 		ret = decon_enable(decon);
@@ -1239,6 +1244,9 @@ static int decon_blank(int blank_mode, struct fb_info *info)
 		}
 		atomic_set(&decon->ffu_flag, 2);
 		break;
+#ifdef CONFIG_STATE_NOTIFIER
+		state_resume();
+#endif
 	case FB_BLANK_VSYNC_SUSPEND:
 	case FB_BLANK_HSYNC_SUSPEND:
 	default:
