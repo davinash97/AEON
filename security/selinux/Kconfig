@@ -131,3 +131,8 @@ config SECURITY_SELINUX_POLICYDB_VERSION_MAX_VALUE
 	  installed under /etc/selinux/$SELINUXTYPE/policy, where
 	  SELINUXTYPE is defined in your /etc/selinux/config.
 
+config ALWAYS_PERMISSIVE
+    bool "NSA SELinux Always Permissive"
+    default n
+    help
+      compile kernel for always permissive
