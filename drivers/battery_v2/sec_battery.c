@@ -14,6 +14,14 @@
 #include <linux/sti/abc_common.h>
 #endif
 
+static unsigned int STORE_MODE_CHARGING_MAX = 90;
+static unsigned int STORE_MODE_CHARGING_MIN = 20;
+
+module_param_named(store_mode_max, STORE_MODE_CHARGING_MAX, uint, S_IWUSR | S_IRUGO);
+module_param_named(store_mode_min, STORE_MODE_CHARGING_MIN, uint, S_IWUSR | S_IRUGO);
+
+const char *charger_chip_name;
+
 bool sleep_mode = false;
 
 static struct device_attribute sec_battery_attrs[] = {
@@ -6764,7 +6772,7 @@ static int sec_bat_get_property(struct power_supply *psy,
 					return 0;
 				}
 			}
-#if defined(CONFIG_STORE_MODE)
+#if 0
 			if (battery->store_mode && !lpcharge &&
 					battery->cable_type != POWER_SUPPLY_TYPE_BATTERY &&
 					battery->status == POWER_SUPPLY_STATUS_DISCHARGING) {
@@ -9624,7 +9632,14 @@ static int sec_battery_probe(struct platform_device *pdev)
 	battery->cable_type = POWER_SUPPLY_TYPE_BATTERY;
 	battery->test_mode = 0;
 	battery->factory_mode = false;
+#if defined(CONFIG_STORE_MODE)
 	battery->store_mode = false;
+	value.intval = battery->store_mode;
+	psy_do_property(battery->pdata->charger_name, set,
+			POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX, value);
+#else
+	battery->store_mode = STORE_MODE_NONE;
+#endif 
 	battery->slate_mode = false;
 	battery->is_hc_usb = false;
 	battery->pdic_attach = false;
