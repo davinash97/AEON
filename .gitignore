@@ -1,0 +1,9 @@
+out
+AIK/*.img
+AIK/ramdisk
+Flashable/*.img
+Flashable/*.zip
+AnyKernel3/Image
+AnyKernel3/dtb
+*.zip
+*.img
