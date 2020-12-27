@@ -425,8 +425,8 @@
 		cl0_idx_num = <17>;
 		cl0_max_support_idx = <3>;
 		cl0_min_support_idx = <16>;
-		cl0_boot_max_qos = <1482000>;
-		cl0_boot_min_qos = <1482000>;
+		cl0_boot_max_qos = <1690000>;
+		cl0_boot_min_qos = <343000>;
 		cl0_boot_lock_time = <40000000>;
 		cl0_en_ema = <1>;
 		cl0_regulator = "BUCK1";
@@ -435,8 +435,8 @@
 		cl1_idx_num = <17>;
 		cl1_max_support_idx = <3>;
 		cl1_min_support_idx = <16>;
-		cl1_boot_max_qos = <1482000>;
-		cl1_boot_min_qos = <1482000>;
+		cl1_boot_max_qos = <1690000>;
+		cl1_boot_min_qos = <343000>;
 		cl1_boot_lock_time = <40000000>;
 		cl1_en_ema = <1>;
 		cl1_regulator = "BUCK1";
@@ -1708,10 +1708,10 @@
 		shmem,ipc_offset = <0x200000>;
 		shmem,ipc_size = <0x200000>;
 
-		/* for step counter sensor controlled by GNSS
+		/* for step counter sensor controlled by GNSS*/
 		pinctrl-names = "gnss_sensor";
 		pinctrl-0 = <&gnss_sensor_i2c &gnss_sensor_irq>;
-		*/
+
 	};
 
 	pd_dispaud: pd-dispaud@10484020 {
