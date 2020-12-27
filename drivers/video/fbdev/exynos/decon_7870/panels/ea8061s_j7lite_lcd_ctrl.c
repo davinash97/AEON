@@ -10,7 +10,7 @@
 #include <linux/backlight.h>
 #include <linux/of_device.h>
 #include <video/mipi_display.h>
-
+#include <linux/display_state.h>
 #include "../decon.h"
 #include "../decon_notify.h"
 #include "../dsim.h"
@@ -25,7 +25,11 @@
 
 #if defined(CONFIG_DISPLAY_USE_INFO)
 #include "dpui.h"
-
+bool display_on = true;
+bool is_display_on()
+{
+	return display_on;
+}
 #define PANEL_STATE_SUSPENED	0
 #define PANEL_STATE_RESUMED	1
 #define PANEL_STATE_SUSPENDING	2
@@ -1390,7 +1394,7 @@ static int dsim_panel_displayon(struct dsim_device *dsim)
 
 	if (lcd->state == PANEL_STATE_SUSPENED)
 		ea8061s_init(lcd);
-
+    display_on = true;
 	mutex_lock(&lcd->lock);
 	lcd->state = PANEL_STATE_RESUMED;
 	mutex_unlock(&lcd->lock);
@@ -1411,6 +1415,7 @@ static int dsim_panel_suspend(struct dsim_device *dsim)
 
 	mutex_lock(&lcd->lock);
 	lcd->state = PANEL_STATE_SUSPENDING;
+    display_on = false;
 	mutex_unlock(&lcd->lock);
 
 	ea8061s_exit(lcd);
