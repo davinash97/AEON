@@ -9,3 +9,8 @@ Now
 and execute script by
 `. aeon.sh`
 that's it.
+# Credits
+Very big thanks to Osm0sis@github for Android Image Kitchen & AnyKernel3
+## Contributions
+Special thanks to ananjaser1211@github, OGSPARTANICUS@github, SiddhantNaik17@github and Astrako@github for their contribution in Exynos 7870 Community.
+Other credits are in their respected commits.
