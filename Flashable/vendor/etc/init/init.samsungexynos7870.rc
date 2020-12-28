@@ -97,7 +97,7 @@ on boot
 #    write /proc/sys/vm/min_free_order_shift 1
 
 # SSWAP
-    write /proc/sys/vm/swappiness 160
+    write /proc/sys/vm/swappiness 200
 
 # CPU hotplug
     chown system system /sys/power/cpuhotplug/enable
@@ -107,6 +107,15 @@ on boot
     chmod 0664 /sys/power/cpuhotplug/min_online_cpu
     chown system system /sys/power/cpuhotplug/max_online_cpu
     chmod 0664 /sys/power/cpuhotplug/max_online_cpu
+
+# MSP Core Status
+    chown system system /sys/devices/system/cpu/cpu1/online
+    chown system system /sys/devices/system/cpu/cpu2/online
+    chown system system /sys/devices/system/cpu/cpu3/online
+    chown system system /sys/devices/system/cpu/cpu4/online
+    chown system system /sys/devices/system/cpu/cpu5/online
+    chown system system /sys/devices/system/cpu/cpu6/online
+    chown system system /sys/devices/system/cpu/cpu7/online
 
 #    mount debugfs /sys/kernel/debug /sys/kernel/debug
     # Allow to access debugfs for system:system
