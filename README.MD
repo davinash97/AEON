@@ -12,7 +12,8 @@ and execute script by
 that's it.
 
 # Credits
-Very big thanks to Osm0sis for Android Image Kitchen & AnyKernel3
+Very big thanks to Osm0sis for Android Image Kitchen & AnyKernel3.
+Also thanks to frap129 for Spectrum.
 
 ## Contributions
 Special thanks to Anan Jaser, OGSPARTANICUS, Siddhant Naik and Alejandro for their contribution in Exynos 7870 Community.
