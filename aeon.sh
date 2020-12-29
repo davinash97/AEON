@@ -180,13 +180,14 @@ DIFF=$(( $END - $START ))
 echo -e "\nIt took $DIFF minutes"
 }
 
-LIST="J7Velte J7Xelte AIK AnyKernel Clean exit"
+LIST="J7Velte J7Xelte J6lte AIK AnyKernel Clean exit"
 SNUM="1> J7Velte
 2> J7Xelte
-3> Android Image Kitchen
-4> AnyKernel
-5> Clean Cache
-6> Exit"
+3> J6lte
+4> Android Image Kitchen
+5> AnyKernel
+6> Clean Cache
+7> Exit"
 select DEVICE in $LIST
 do
     case $DEVICE in 
@@ -212,6 +213,21 @@ do
             CONFIG=j7xelte_defconfig
 	        export LOCALVERSION=_$KNAME
             DTB="exynos7870-j7xelte_eur_open_00.dtb exynos7870-j7xelte_eur_open_01.dtb exynos7870-j7xelte_eur_open_02.dtb exynos7870-j7xelte_eur_open_03.dtb exynos7870-j7xelte_eur_open_04.dtb"
+            compile_kernel
+                if [ -f $IMAGE ] && [ ! -f out/dtb ]; then 
+                    compile_dtb
+                else
+                    echo -e "\nCompilation Failed\n"
+                fi
+        printf "$SNUM"
+        ;;
+        J6lte)
+            clean
+            START=$(date +%M)
+            echo -e "\nChosen $DEVICE\n"
+            CONFIG=j6lte_defconfig
+	        export LOCALVERSION=_$KNAME
+            DTB="exynos7870-j6lte_cis_ser_00.dtb exynos7870-j6lte_cis_ser_02.dtb"
             compile_kernel
                 if [ -f $IMAGE ] && [ ! -f out/dtb ]; then 
                     compile_dtb
