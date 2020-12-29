@@ -24,8 +24,8 @@ set_progress(0.02);
 		ifelse(is_mounted("/vendor"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "/vendor"));
 
     ui_print("-->> Installing Files...");
-package_extract_dir("bin", "/vendor/bin")
-package_extract_dir("init", "/vendor/etc/init");
+package_extract_dir("bin", "/vendor/bin");
+package_extract_dir("etc", "/vendor/etc");
 
     ui_print("-->> Installing Kernel...");
 package_extract_file("boot.img", "/dev/block/platform/13540000.dwmmc0/by-name/BOOT");

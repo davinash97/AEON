@@ -503,4 +503,3 @@ EXIT:
 err_alloc_img:
 	return nRet;
 }
-
