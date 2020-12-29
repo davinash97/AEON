@@ -10,7 +10,6 @@ CAIK=AIK/split_img;
 NIMG='AIK/image-new.img';
 NAME='AEON-Q'; #FOR ZIP_NAME
 KNAME=' AEON Q for J7velte By DAvinash97'
-CONFIG=j7velte_defconfig
 JOBS=$(($(nproc)+1))
 echo -e "\nSetting Up Environment\n"
 
@@ -133,8 +132,8 @@ echo -e "\nCompiling DTB\n"
 compile_kernel ()
 {
 echo -e "\nCompiling\n"
-echo -e "\nMaking Config\n"
-make O=out j7velte_defconfig
+echo -e "\nMaking $CONFIG\n"
+make O=out $CONFIG
 echo -e "\nMaking DTB\n"
 make O=out $DTB
 echo -e "\nCompiling zImage\n"
@@ -181,12 +180,13 @@ DIFF=$(( $END - $START ))
 echo -e "\nIt took $DIFF minutes"
 }
 
-LIST="J7Velte AIK AnyKernel Clean exit"
+LIST="J7Velte J7Xelte AIK AnyKernel Clean exit"
 SNUM="1> J7Velte
-2> Android Image Kitchen
-3> AnyKernel
-4> Clean Cache
-5> Exit"
+2> J7Xelte
+3> Android Image Kitchen
+4> AnyKernel
+5> Clean Cache
+6> Exit"
 select DEVICE in $LIST
 do
     case $DEVICE in 
@@ -196,7 +196,22 @@ do
             echo -e "\nChosen $DEVICE\n"
             CONFIG=j7velte_defconfig
 	        export LOCALVERSION=_$KNAME
-            DTB="exynos7870-j7velte_sea_open_00.dtb exynos7870-j7velte_sea_open_01.dtb exynos7870-j7velte_sea_open_03.dtb" #this is not needed yet
+            DTB="exynos7870-j7velte_sea_open_00.dtb exynos7870-j7velte_sea_open_01.dtb exynos7870-j7velte_sea_open_03.dtb"
+            compile_kernel
+                if [ -f $IMAGE ] && [ ! -f out/dtb ]; then 
+                    compile_dtb
+                else
+                    echo -e "\nCompilation Failed\n"
+                fi
+        printf "$SNUM"
+        ;;
+        J7Xelte)
+            clean
+            START=$(date +%M)
+            echo -e "\nChosen $DEVICE\n"
+            CONFIG=j7xelte_defconfig
+	        export LOCALVERSION=_$KNAME
+            DTB="exynos7870-j7xelte_eur_open_00.dtb exynos7870-j7xelte_eur_open_01.dtb exynos7870-j7xelte_eur_open_02.dtb exynos7870-j7xelte_eur_open_03.dtb exynos7870-j7xelte_eur_open_04.dtb"
             compile_kernel
                 if [ -f $IMAGE ] && [ ! -f out/dtb ]; then 
                     compile_dtb

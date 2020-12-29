@@ -1,7 +1,14 @@
 # SPDX-License-Identifier: GPL-2.0
-dtb-y += exynos7870-j7velte_sea_open_00.dtb
-dtb-y += exynos7870-j7velte_sea_open_01.dtb
-dtb-y += exynos7870-j7velte_sea_open_03.dtb
+
+dtb-$(CONFIG_BOARD_J7VELTE) += exynos7870-j7velte_sea_open_00.dtb \
+exynos7870-j7velte_sea_open_01.dtb \
+exynos7870-j7velte_sea_open_03.dtb
+
+dtb-$(CONFIG_BOARD_J7XELTE) += exynos7870-j7xelte_eur_open_00.dtb \
+exynos7870-j7xelte_eur_open_01.dtb \
+exynos7870-j7xelte_eur_open_02.dtb \
+exynos7870-j7xelte_eur_open_03.dtb \
+exynos7870-j7xelte_eur_open_04.dtb
 
 targets += dtbs
 DTB_LIST  := $(dtb-y) $(dtbo-y)
