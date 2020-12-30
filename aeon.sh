@@ -8,7 +8,7 @@ DTS=out/arch/arm64/boot/dts;
 CDTB=out/dtb;
 CAIK=AIK/split_img;
 NIMG='AIK/image-new.img';
-NAME='AEON-Q-$DEVICE'; #FOR ZIP_NAME
+NAME='AEON-Q'; #FOR ZIP_NAME
 KNAME=' AEON Q for J7velte By DAvinash97'
 JOBS=$(($(nproc)+1))
 echo -e "\nSetting Up Environment\n"
@@ -57,6 +57,7 @@ if [ -d Flashable ]; then
 else
 exit
 fi
+
 clean ()
 {
 if [ -f $IMAGE ]; then
@@ -79,8 +80,8 @@ if [ -f $NIMG ]; then
 rm $NIMG
 fi
 
-if [ -f AnyKernel/$NAME.zip ]; then
-rm AnyKernel/$NAME.zip
+if [ -f AnyKernel/AEON*.zip ]; then
+rm AnyKernel/AEON*.zip
 fi
 
 if [ -f AnyKernel/Image ]; then
@@ -95,8 +96,8 @@ if [ -f $NIMG ]; then
 rm $NIMG
 fi
 
-if [ -f Flashable/$NAME.zip ]; then
-rm Flashable/$NAME.zip
+if [ -f Flashable/AEON*.zip ]; then
+rm Flashable/AEON*.zip
 fi
 
 if [ -f $NAME.zip ]; then
@@ -123,11 +124,38 @@ if [ ! -d out ]; then
     cp -r firmware out/firmware
 fi
 
+OTHERS="AIK AnyKernel exit"
+COMPILE ()
+{
+select CHOICE in $OTHERS
+do
+	case $CHOICE in
+		AIK)
+			compile_aik
+			break
+		;;
+		AnyKernel)
+			compile_anyk
+			break
+		;;
+		exit)
+			break
+		;;
+        	*)
+            		echo -e "\nError: Invalid Input\n"
+        	;;
+	esac
+done
+}
+
 compile_dtb ()
 {
 echo -e "\nCompiling DTB\n"
 ./tools/dtbtool $DTS/ -o out/dtb
 total_time
+	if [ -f $IMAGE ] && [ -f out/dtb ]; then
+		COMPILE
+	fi
 }
 
 compile_kernel ()
@@ -156,8 +184,8 @@ if [ -f $IMAGE ]; then
         if [ -f $NIMG ]; then
             cp -r $NIMG Flashable/boot.img
             cd Flashable
-            zip -r9 $NAME *
-            cp *.zip ../
+            zip -r9 $NAME-$DEVICE *
+            mv *.zip ../
             cd ..
         fi
 else
@@ -172,7 +200,7 @@ if [ -f $IMAGE ]; then
     cp $CDTB ./AnyKernel3/
         if [ -f AnyKernel3/Image ]; then
             cd AnyKernel3
-            zip -r9 $NAME-AnyK *
+            zip -r9 $NAME-$DEVICE-AnyK *
             cp *.zip ../
             cd ..
         fi
@@ -186,12 +214,12 @@ DIFF=$(( $END - $START ))
 echo -e "\nIt took $DIFF minutes"
 }
 
-OTHERS="1) AIK\n 2) AnyKernel\n"
-LIST="J7Velte J7Xelte J6lte J7Prime Other Clean exit"
+LIST="J7Velte J7Xelte J6lte On7xelte Other Clean exit"
 SNUM="1) J7Velte
 2) J7Xelte
 3) J6lte
-4) Other
+4) On7xelte
+5) Other
 6) Clean Cache
 7) Exit"
 select DEVICE in $LIST
@@ -232,7 +260,7 @@ do
             compile_kernel
         printf "$SNUM"
         ;;
-        J7Prime)
+        On7xelte)
             clean
             START=$(date +%M)
             echo -e "\nChosen $DEVICE\n"
@@ -243,13 +271,8 @@ do
         printf "$SNUM"
         ;;	
         Other)
-		echo -e $OTHERS
-		read n
-		if [ n == 1 ]; then
-		compile_aik
-		elif [ n == 2 ]; then
-		compile_anyk
-		fi	
+		COMPILE	
+        printf "$SNUM"
         ;;
         Clean)
             echo -e "\nChosen $DEVICE\n"
