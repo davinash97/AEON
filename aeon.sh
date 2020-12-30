@@ -8,7 +8,7 @@ DTS=out/arch/arm64/boot/dts;
 CDTB=out/dtb;
 CAIK=AIK/split_img;
 NIMG='AIK/image-new.img';
-NAME='AEON-Q'; #FOR ZIP_NAME
+NAME='AEON-Q-$DEVICE'; #FOR ZIP_NAME
 KNAME=' AEON Q for J7velte By DAvinash97'
 JOBS=$(($(nproc)+1))
 echo -e "\nSetting Up Environment\n"
@@ -127,6 +127,7 @@ compile_dtb ()
 {
 echo -e "\nCompiling DTB\n"
 ./tools/dtbtool $DTS/ -o out/dtb
+total_time
 }
 
 compile_kernel ()
@@ -138,6 +139,11 @@ echo -e "\nMaking DTB\n"
 make O=out $DTB
 echo -e "\nCompiling zImage\n"
 make O=out -j$(($(nproc) + 1))
+    if [ -f $IMAGE ] && [ ! -f out/dtb ]; then 
+        compile_dtb
+    else
+        echo -e "\nCompilation Failed\n"
+    fi
 }
 
 compile_aik ()
@@ -180,14 +186,14 @@ DIFF=$(( $END - $START ))
 echo -e "\nIt took $DIFF minutes"
 }
 
-LIST="J7Velte J7Xelte J6lte AIK AnyKernel Clean exit"
-SNUM="1> J7Velte
-2> J7Xelte
-3> J6lte
-4> Android Image Kitchen
-5> AnyKernel
-6> Clean Cache
-7> Exit"
+OTHERS="1) AIK\n 2) AnyKernel\n"
+LIST="J7Velte J7Xelte J6lte J7Prime Other Clean exit"
+SNUM="1) J7Velte
+2) J7Xelte
+3) J6lte
+4) Other
+6) Clean Cache
+7) Exit"
 select DEVICE in $LIST
 do
     case $DEVICE in 
@@ -214,11 +220,6 @@ do
 	        export LOCALVERSION=_$KNAME
             DTB="exynos7870-j7xelte_eur_open_00.dtb exynos7870-j7xelte_eur_open_01.dtb exynos7870-j7xelte_eur_open_02.dtb exynos7870-j7xelte_eur_open_03.dtb exynos7870-j7xelte_eur_open_04.dtb"
             compile_kernel
-                if [ -f $IMAGE ] && [ ! -f out/dtb ]; then 
-                    compile_dtb
-                else
-                    echo -e "\nCompilation Failed\n"
-                fi
         printf "$SNUM"
         ;;
         J6lte)
@@ -229,30 +230,26 @@ do
 	        export LOCALVERSION=_$KNAME
             DTB="exynos7870-j6lte_cis_ser_00.dtb exynos7870-j6lte_cis_ser_02.dtb"
             compile_kernel
-                if [ -f $IMAGE ] && [ ! -f out/dtb ]; then 
-                    compile_dtb
-                else
-                    echo -e "\nCompilation Failed\n"
-                fi
         printf "$SNUM"
         ;;
-        AIK)
+        J7Prime)
+            clean
+            START=$(date +%M)
             echo -e "\nChosen $DEVICE\n"
-                if [ -f $IMAGE ]; then 
-                    compile_aik
-                else
-                    echo -e "\nCheck Your Files if they exist\n"
-                fi
-        break
-        ;;
-        AnyKernel)
-            echo -e "\nChosen $DEVICE\n"
-                if [ -f AnyKernel3/Image ]; then
-                compile_anyk
-                else
-                    echo -e "\nCheck Your Files if they exist\n"
-                fi
-        break
+            CONFIG=on7xelte_defconfig
+	        export LOCALVERSION=_$KNAME
+            DTB="exynos7870-on7xelte_swa_open_00.dtb exynos7870-on7xelte_swa_open_01.dtb exynos7870-on7xelte_swa_open_02.dtb"
+            compile_kernel
+        printf "$SNUM"
+        ;;	
+        Other)
+		echo -e $OTHERS
+		read n
+		if [ n == 1 ]; then
+		compile_aik
+		elif [ n == 2 ]; then
+		compile_anyk
+		fi	
         ;;
         Clean)
             echo -e "\nChosen $DEVICE\n"
@@ -266,5 +263,4 @@ do
             echo -e "\nError: Invalid Input\n"
         ;;
     esac
-total_time
 done
