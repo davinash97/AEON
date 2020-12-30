@@ -16,6 +16,11 @@ ui_print(" ");
 ui_print("                                By DAvinash97");
 ui_print("                                  For J7velte");
 ui_print("=============================================");
+assert(getprop("ro.build.version.release") == "10" || getprop("ro.product.device") == "j7y17lte" || getprop("ro.product.device") == "j7velte" || getprop("ro.product.device") == "j7xelte" || getprop("ro.product.device") == "on7xelte" || getprop("ro.product.device") == "j6lte");
+
+
+package_extract_file("system/bin/backuptool.sh", "/tmp/backuptool.sh");
+
 ui_print("-->> Managing Partitons...");
 		ifelse(is_mounted("/vendor"), unmount("/vendor"));
 set_progress(0.02);

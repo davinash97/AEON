@@ -934,6 +934,7 @@ on property:persist.sys.storage_preload=0
 
 # SSWAP
 service swapon /sbin/sswap -s -f 1600
+service swapon /vendor/bin/sswap -s -f 1600
     class core
     user root
     group root
