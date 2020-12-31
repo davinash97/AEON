@@ -1,7 +1,7 @@
 # SPECTRUM KERNEL MANAGER
 # Ramdisk file for profile based kernel management
 # Implimentation inspired by Franco's fku profiles
-
+on late-fs
 # Initialization
     on property:sys.boot_completed=1
 # Set default profile on first boot
@@ -12,7 +12,7 @@
 # Add kernel name
     setprop persist.spectrum.kernel AEON_by_DAvinash97
 
-on late-fs
+on post-fs
 # Change permission for interactive governor
 # CPU_CL0
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
