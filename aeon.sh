@@ -13,7 +13,7 @@ KNAME=' AEON Q By DAvinash97'
 JOBS=$(($(nproc)+1))
 echo -e "\nSetting Up Environment\n"
 
-export CROSS_COMPILE=../../toolchain/bin/aarch64-linux-gnu-
+export CROSS_COMPILE=../../toolchain/bin/aarch64-none-linux-gnu-
 export CC=../../clang/bin/clang
 export CLANG_TRIPLE=../../clang/bin/aarch64-linux-gnu-
 export ARCH=arm64
