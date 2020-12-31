@@ -214,14 +214,15 @@ DIFF=$(( $END - $START ))
 echo -e "\nIt took $DIFF minutes"
 }
 
-LIST="J7Velte J7Xelte J6lte On7xelte Other Clean exit"
+LIST="J7Velte J7Xelte J6lte On7xelte J7Velte_ltn Other Clean exit"
 SNUM="1) J7Velte
 2) J7Xelte
 3) J6lte
 4) On7xelte
-5) Other
-6) Clean Cache
-7) Exit"
+5) J7Velte_ltn (J701MT test)
+6) Other
+7) Clean Cache
+8) Exit"
 select DEVICE in $LIST
 do
     case $DEVICE in 
@@ -257,6 +258,16 @@ do
             CONFIG=j6lte_defconfig
 	        export LOCALVERSION=_$KNAME
             DTB="exynos7870-j6lte_cis_ser_00.dtb exynos7870-j6lte_cis_ser_02.dtb"
+            compile_kernel
+        printf "$SNUM"
+        ;;
+	J7Velte_ltn)
+            clean
+            START=$(date +%M)
+            echo -e "\nChosen $DEVICE\n"
+            CONFIG=j7veltedtv_defconfig
+	        export LOCALVERSION=_$KNAME
+            DTB="exynos7870-j7velte_ltn_dtv_01.dtb exynos7870-j7velte_ltn_dtv_03.dtb"
             compile_kernel
         printf "$SNUM"
         ;;
