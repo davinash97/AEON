@@ -14,7 +14,7 @@ ui_print(" d8888888888888       Y88b. .d88P888   Y8888 ");
 ui_print("d88P     8888888888888  Y88888P  888    Y888 ");
 ui_print(" ");
 ui_print("                                By DAvinash97");
-ui_print("                                  For J7velte");
+ui_print("                                  For " + getprop("ro.product.device"));
 ui_print("=============================================");
 assert(getprop("ro.build.version.release") == "10" || getprop("ro.product.device") == "j7y17lte" || getprop("ro.product.device") == "j7velte" || getprop("ro.product.device") == "j7xelte" || getprop("ro.product.device") == "on7xelte" || getprop("ro.product.device") == "j6lte");
 
