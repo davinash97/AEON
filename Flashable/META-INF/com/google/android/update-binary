@@ -2,6 +2,9 @@
 ## Script by DAvinash97 @ xda-developers.com
 ## Huge Thanks to osm0sis for AnyKernel
 ## ui_print and few other methods are from AnyKernel
+# Credits to askapache.com for online figlet generator
+# link below
+# https://www.askapache.com/online-tools/figlet-ascii/
 
 OUTFD=/proc/self/fd/$2;
 ZIPFILE="$3";
@@ -31,6 +34,19 @@ file_getprop() {
 $BB grep "^$2=" "$1" | $BB cut -d= -f2-;
 }
 
+finish() {
+    if grep "vendor" /proc/mounts; then
+        ui_print "mounting vendor";
+        mount /vendor;
+        cp -r /tmp/vendor ../vendor
+    fi
+
+}
+
+write_raw_image() {
+  dd if=$1 of=$2;
+}
+
 ui_print " ";
 ui_print "Written By DAvinash97 @xda-developers.com";
 ui_print "Special Thanks to Osm0sis @xda-developers.com";
@@ -42,47 +58,21 @@ if [[ ! ` cat ../VARIANT | grep '[AGJ][3567][0123][01]'` ]]; then
 	ui_print "This Kernel is not for $DEVICE";
 	ui_print "and is Not Supported";
 	ui_print "aborting...";
-	ui_printfile RIP;
+	ui_printfile ../tmp/RIP;
 	ui_print " ";
 exit 1;
 else
 	ui_print "$DEVICE is Supported";
 	ui_print " ";
-	ui_printfile AEON;
+	ui_printfile ../tmp/AEON;
 	ui_print " ";
 	ui_print "Your Kernel Directory is";
 	ui_print "$BOOTDIR";
 fi;
 
-finish() {
-    if grep "vendor" /proc/mounts; then
-        ui_print "mounting vendor";
-        mount /vendor;
-        cp -r /tmp/vendor ../vendor
-    fi
+ui_print "Flashing Kernel";
+write_raw_image J701F.img $BOOTDIR
 
-}
 ui_print " ";
-if cat ../VARIANT | grep "J701"; then
-ui_print "Found $DEVICE"
-ui_print "Installing Kernel"
-#dd if=J701.img of=$BOOTDIR
-elif cat ../VARIANT | grep "J710"; then
-ui_print "Found $DEVICE"
-ui_print "Installing Kernel"
-#dd if=J701.img of=$BOOTDIR
-elif cat ../VARIANT | grep "G610"; then
-ui_print "Found $DEVICE"
-ui_print "Installing Kernel"
-#dd if=J701.img of=$BOOTDIR
-elif cat ../VARIANT | grep "J600"; then
-ui_print "Found $DEVICE"
-ui_print "Installing Kernel"
-#dd if=J701.img of=$BOOTDIR
-elif cat ../VARIANT | grep "J530"; then
-ui_print "Found $DEVICE"
-ui_print "Installing Kernel"
-#dd if=J701.img of=$BOOTDIR
-fi
-
+ui_print "Flashed"
 finish

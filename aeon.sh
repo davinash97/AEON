@@ -60,8 +60,12 @@ fi
 
 clean ()
 {
-if [ -f $IMAGE* ]; then
-rm $IMAGE*
+if [ -f $IMAGE ]; then
+rm $IMAGE
+fi
+
+if [ -f $IMAGE.lz4 ]; then
+rm $IMAGE.lz4
 fi
 
 if [ -d $DTS ]; then
@@ -116,8 +120,8 @@ mkdir out
 cp -r firmware out/firmware
 fi
 
-if [ -f *.zip ]; then
-rm *.zip
+if [[ -f AEON*.zip ]]; then
+rm AEON*.zip
 fi
 
 OTHERS="AIK AnyKernel exit"
@@ -156,6 +160,9 @@ total_time
 
 compile_kernel ()
 {
+if [ -d $DTS ]; then
+rm -rf $DTS
+fi
 echo -e "\nCompiling\n"
 echo -e "\nMaking $CONFIG\n"
 make O=out $CONFIG
@@ -227,24 +234,19 @@ do
             echo -e "\nChosen $DEVICE\n"
             CONFIG=j7velte_defconfig
 	        export LOCALVERSION=_$KNAME
-                select VARIANT in J701F J701M exit
+                select VARIANT in J701F J701M
                     do
 	                    case $VARIANT in
 		                    J701F)
                                     echo "Making for $VARIANT"
-	                                export CONFIG_BOARD_J7VELTE=y
                                     DEVICE=J701F
                                     DTB="exynos7870-j7velte_sea_open_00.dtb exynos7870-j7velte_sea_open_01.dtb exynos7870-j7velte_sea_open_03.dtb"
 			                    break
 		                    ;;
 		                    J701M)
                                     echo "Making for $VARIANT"
-	                                export CONFIG_BOARD_J7VELTE_M=y
                                     DEVICE=J701M
                                     DTB="exynos7870-j7velte_ltn_dtv_01.dtb exynos7870-j7velte_ltn_dtv_03.dtb"
-			                    break
-		                    ;;
-		                    exit)
 			                    break
 		                    ;;
                             *)
@@ -255,8 +257,6 @@ do
                 compile_kernel
                 if [ -f $IMAGE ] && [ ! -f out/dtb ]; then 
                     compile_dtb
-                else
-                    echo -e "\nCompilation Failed\n"
                 fi
         printf "$SNUM"
         ;;
