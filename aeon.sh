@@ -234,26 +234,7 @@ do
             echo -e "\nChosen $DEVICE\n"
             CONFIG=j7velte_defconfig
 	        export LOCALVERSION=_$KNAME
-                select VARIANT in J701F J701M
-                    do
-	                    case $VARIANT in
-		                    J701F)
-                                    echo "Making for $VARIANT"
-                                    DEVICE=J701F
-                                    DTB="exynos7870-j7velte_sea_open_00.dtb exynos7870-j7velte_sea_open_01.dtb exynos7870-j7velte_sea_open_03.dtb"
-			                    break
-		                    ;;
-		                    J701M)
-                                    echo "Making for $VARIANT"
-                                    DEVICE=J701M
-                                    DTB="exynos7870-j7velte_ltn_dtv_01.dtb exynos7870-j7velte_ltn_dtv_03.dtb"
-			                    break
-		                    ;;
-                            *)
-                                		echo -e "\nError: Invalid Input\n"
-                            	;;
-	                    esac
-                    done
+            DTB="exynos7870-j7velte_sea_open_00.dtb exynos7870-j7velte_sea_open_01.dtb exynos7870-j7velte_sea_open_03.dtb"
                 compile_kernel
                 if [ -f $IMAGE ] && [ ! -f out/dtb ]; then 
                     compile_dtb
