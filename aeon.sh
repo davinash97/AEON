@@ -185,7 +185,7 @@ if [ -f $IMAGE ]; then
     cp $CDTB ./$CAIK/boot.img-dt
     eval AIK/repackimg.sh
         if [ -f $NIMG ]; then
-            cp -r $NIMG Flashable/$DEVICE.img
+            cp -r $NIMG Flashable/boot.img
             cd Flashable
             zip -r9 $NAME-$DEVICE *
             mv *.zip ../

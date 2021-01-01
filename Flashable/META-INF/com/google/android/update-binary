@@ -71,7 +71,7 @@ else
 fi;
 
 ui_print "Flashing Kernel";
-write_raw_image J701F.img $BOOTDIR
+write_raw_image boot.img $BOOTDIR
 
 ui_print " ";
 ui_print "Flashed"
