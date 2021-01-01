@@ -4,6 +4,9 @@ dtb-$(CONFIG_BOARD_J7VELTE) += exynos7870-j7velte_sea_open_00.dtb \
 exynos7870-j7velte_sea_open_01.dtb \
 exynos7870-j7velte_sea_open_03.dtb
 
+dtb-$(CONFIG_BOARD_J7VELTE_M) += exynos7870-j7velte_ltn_dtv_01.dtb \
+exynos7870-j7velte_ltn_dtv_03.dtb
+
 dtb-$(CONFIG_BOARD_J7XELTE) += exynos7870-j7xelte_eur_open_00.dtb \
 exynos7870-j7xelte_eur_open_01.dtb \
 exynos7870-j7xelte_eur_open_02.dtb \

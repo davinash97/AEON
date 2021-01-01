@@ -60,12 +60,8 @@ fi
 
 clean ()
 {
-if [ -f $IMAGE ]; then
-rm $IMAGE
-fi
-
-if [ -f $GIMAGE ]; then
-rm $GIMAGE
+if [ -f $IMAGE* ]; then
+rm $IMAGE*
 fi
 
 if [ -d $DTS ]; then
@@ -80,8 +76,8 @@ if [ -f $NIMG ]; then
 rm $NIMG
 fi
 
-if [ -f AnyKernel/AEON*.zip ]; then
-rm AnyKernel/AEON*.zip
+if [ -f AnyKernel/*.zip ]; then
+rm AnyKernel/*.zip
 fi
 
 if [ -f AnyKernel/Image ]; then
@@ -96,16 +92,12 @@ if [ -f $NIMG ]; then
 rm $NIMG
 fi
 
-if [ -f Flashable/AEON*.zip ]; then
-rm Flashable/AEON*.zip
+if [ -f Flashable/*.img ]; then
+rm Flashable/*.img
 fi
 
-if [ -f $NAME.zip ]; then
-rm $NAME.zip
-fi
-
-if [ -f $NAME-AnyK.zip ]; then
-rm $NAME-AnyK.zip
+if [ -f Flashable/*.zip ]; then
+rm Flashable/*.zip
 fi
 
 if [ -f ./$CAIK/boot.img-zImage ]; then
@@ -120,8 +112,12 @@ fi
 clear
 
 if [ ! -d out ]; then
-    mkdir out
-    cp -r firmware out/firmware
+mkdir out
+cp -r firmware out/firmware
+fi
+
+if [ -f *.zip ]; then
+rm *.zip
 fi
 
 OTHERS="AIK AnyKernel exit"
@@ -182,7 +178,7 @@ if [ -f $IMAGE ]; then
     cp $CDTB ./$CAIK/boot.img-dt
     eval AIK/repackimg.sh
         if [ -f $NIMG ]; then
-            cp -r $NIMG Flashable/boot.img
+            cp -r $NIMG Flashable/$DEVICE.img
             cd Flashable
             zip -r9 $NAME-$DEVICE *
             mv *.zip ../
@@ -231,8 +227,32 @@ do
             echo -e "\nChosen $DEVICE\n"
             CONFIG=j7velte_defconfig
 	        export LOCALVERSION=_$KNAME
-            DTB="exynos7870-j7velte_sea_open_00.dtb exynos7870-j7velte_sea_open_01.dtb exynos7870-j7velte_sea_open_03.dtb"
-            compile_kernel
+                select VARIANT in J701F J701M exit
+                    do
+	                    case $VARIANT in
+		                    J701F)
+                                    echo "Making for $VARIANT"
+	                                export CONFIG_BOARD_J7VELTE=y
+                                    DEVICE=J701F
+                                    DTB="exynos7870-j7velte_sea_open_00.dtb exynos7870-j7velte_sea_open_01.dtb exynos7870-j7velte_sea_open_03.dtb"
+			                    break
+		                    ;;
+		                    J701M)
+                                    echo "Making for $VARIANT"
+	                                export CONFIG_BOARD_J7VELTE_M=y
+                                    DEVICE=J701M
+                                    DTB="exynos7870-j7velte_ltn_dtv_01.dtb exynos7870-j7velte_ltn_dtv_03.dtb"
+			                    break
+		                    ;;
+		                    exit)
+			                    break
+		                    ;;
+                            *)
+                                		echo -e "\nError: Invalid Input\n"
+                            	;;
+	                    esac
+                    done
+                compile_kernel
                 if [ -f $IMAGE ] && [ ! -f out/dtb ]; then 
                     compile_dtb
                 else
@@ -278,6 +298,9 @@ do
             echo -e "\nChosen $DEVICE\n"
             echo -e "\nCleaning Up Previous Build"
             make O=out clean && make O=out mrproper
+            if [ -f AEON*.zip ]; then
+                rm AEON*.zip
+            fi
         ;;
         exit)
             break
