@@ -9,9 +9,10 @@
 OUTFD=/proc/self/fd/$2;
 ZIPFILE="$3";
 DEVICE=`getprop ro.product.device`;
+HARDWARE=`getprop ro.hardware`
 BOOTDIR=`cat ../etc/recovery.fstab | grep 'boot' | awk '{printf$3}'`;
+MOUNTED=`cat /proc/mounts | grep "vendor" | awk '{printf$2}'`
 
-unzip $ZIPFILE;
 ui_print() {
   until [ ! "$1" ]; do
     echo "ui_print $1
@@ -19,6 +20,17 @@ ui_print() {
     shift;
   done;
 }
+    ui_print " "
+if [[ $MOUNTED == '/vendor' ]]; then
+    ui_print "Vendor already Mounted"
+else
+    ui_print "Mounting vendor";
+    mount /vendor;
+fi
+if [ -f /vendor/etc/fstab.$HARDWARE ]; then
+    rm /vendor/etc/fstab.$HARDWARE
+fi
+unzip -o $ZIPFILE;
 
 ui_printfile() {
   while IFS='' read -r line || $BB [[ -n "$line" ]]; do
@@ -32,23 +44,6 @@ echo "progress $1 $2" >> $OUTFD;
 
 file_getprop() {
 $BB grep "^$2=" "$1" | $BB cut -d= -f2-;
-}
-
-finish() {
-    if grep "vendor" /proc/mounts; then
-        ui_print "mounting vendor";
-        mount /vendor;
-        cp -r /tmp/vendor ../vendor
-    fi
-    if [ -d data/magisk_backup* ]; then
-       ui_print "Deleting Previous Magisk Backups"
-       rm -rf data/magisk_backup*
-    fi
-    if [ -d /data/dalvik-cache ]; then
-       ui_print "Wiping Dalvik-Cache"
-       rm -rf /data/dalvik-cache
-    fi
-
 }
 
 write_raw_image() {
@@ -74,13 +69,23 @@ else
 	ui_print " ";
 	ui_printfile ../tmp/AEON;
 	ui_print " ";
-	ui_print "Your Kernel Directory is";
-	ui_print "$BOOTDIR";
 fi;
 
-ui_print "Flashing Kernel";
+if [ -d /data/adb/magisk ]; then
+    ui_print "Deleting Previous Magisk Backups"
+    rm -rf data/magisk_backup*
+    ui_print " "
+fi
+
+if [ -d /data/dalvik-cache ]; then
+    ui_print "Wiping Dalvik-Cache"
+    rm -rf /data/dalvik-cache
+    ui_print " "
+fi
+
+ui_print "Flashing Kernel Here";
+ui_print "$BOOTDIR";
 write_raw_image boot.img $BOOTDIR
 
 ui_print " ";
-ui_print "Flashed"
-finish
+ui_print "Done"
