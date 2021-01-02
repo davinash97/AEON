@@ -2,6 +2,10 @@
 # Script by DAvinash97
 # Feel free to use, make sure to add proper credits
 
+clear
+echo -e "What version would you like to export\n"
+read n
+echo "Version Choosen $n"
 IMAGE=out/arch/arm64/boot/Image;
 GIMAGE=$IMAGE.gz
 DTS=out/arch/arm64/boot/dts;
@@ -9,7 +13,7 @@ CDTB=out/dtb;
 CAIK=AIK/split_img;
 NIMG='AIK/image-new.img';
 NAME='AEON-Q'; #FOR ZIP_NAME
-KNAME=' AEON Q By DAvinash97'
+KNAME=" AEON Q v'$n' By DAvinash97"
 JOBS=$(($(nproc)+1))
 echo -e "\nSetting Up Environment\n"
 
@@ -112,8 +116,6 @@ if [ -f ./$CAIK/boot.img-dt ]; then
 rm ./$CAIK/boot.img-dt
 fi
 }
-
-clear
 
 if [ ! -d out ]; then
 mkdir out
@@ -233,7 +235,7 @@ do
             START=$(date +%M)
             echo -e "\nChosen $DEVICE\n"
             CONFIG=j7velte_defconfig
-	        export LOCALVERSION=_$KNAME
+	        export LOCALVERSION=$KNAME
             DTB="exynos7870-j7velte_sea_open_00.dtb exynos7870-j7velte_sea_open_01.dtb exynos7870-j7velte_sea_open_03.dtb"
                 compile_kernel
                 if [ -f $IMAGE ] && [ ! -f out/dtb ]; then 
@@ -246,7 +248,7 @@ do
             START=$(date +%M)
             echo -e "\nChosen $DEVICE\n"
             CONFIG=j7xelte_defconfig
-	        export LOCALVERSION=_$KNAME
+	        export LOCALVERSION=$KNAME
             DTB="exynos7870-j7xelte_eur_open_00.dtb exynos7870-j7xelte_eur_open_01.dtb exynos7870-j7xelte_eur_open_02.dtb exynos7870-j7xelte_eur_open_03.dtb exynos7870-j7xelte_eur_open_04.dtb"
             compile_kernel
         printf "$SNUM"
@@ -256,7 +258,7 @@ do
             START=$(date +%M)
             echo -e "\nChosen $DEVICE\n"
             CONFIG=j6lte_defconfig
-	        export LOCALVERSION=_$KNAME
+	        export LOCALVERSION=$KNAME
             DTB="exynos7870-j6lte_cis_ser_00.dtb exynos7870-j6lte_cis_ser_02.dtb"
             compile_kernel
         printf "$SNUM"
@@ -266,7 +268,7 @@ do
             START=$(date +%M)
             echo -e "\nChosen $DEVICE\n"
             CONFIG=on7xelte_defconfig
-	        export LOCALVERSION=_$KNAME
+	        export LOCALVERSION=$KNAME
             DTB="exynos7870-on7xelte_swa_open_00.dtb exynos7870-on7xelte_swa_open_01.dtb exynos7870-on7xelte_swa_open_02.dtb"
             compile_kernel
         printf "$SNUM"
