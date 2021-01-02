@@ -40,6 +40,14 @@ finish() {
         mount /vendor;
         cp -r /tmp/vendor ../vendor
     fi
+    if [ -d data/magisk_backup* ]; then
+       ui_print "Deleting Previous Magisk Backups"
+       rm -rf data/magisk_backup*
+    fi
+    if [ -d /data/dalvik-cache ]; then
+       ui_print "Wiping Dalvik-Cache"
+       rm -rf /data/dalvik-cache
+    fi
 
 }
 
