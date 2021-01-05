@@ -408,7 +408,7 @@ static void s2mu005_set_fast_charging_current(struct i2c_client *i2c,
 	pr_info("[DEBUG]%s: current  %d\n", __func__, charging_current);
 	if (charging_current <= 100)
 		data = 0;
-	else if (charging_current >= 100 && charging_current <= 2600)
+	else if (charging_current >= 100 && charging_current <= 2100)
 		data = ((charging_current - 100) / 50) + 1;
 	else
 		data = 0x33;
