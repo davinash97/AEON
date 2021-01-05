@@ -12,7 +12,6 @@
 #include <linux/sec_batt.h>
 
 #define ENABLE_MIVR 1
-
 #define EN_OVP_IRQ 1
 #define EN_IEOC_IRQ 1
 #define EN_TOPOFF_IRQ 1
