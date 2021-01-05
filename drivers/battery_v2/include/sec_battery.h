@@ -611,10 +611,7 @@ enum {
 };
 
 extern void select_pdo(int num);
-<<<<<<< HEAD
-void charger_control_init(struct sec_battery_info *info);
-=======
->>>>>>> parent of 4c015ed...  batteryv2: Add sec charger controls, updated
+
 #ifdef CONFIG_OF
 extern int adc_read(struct sec_battery_info *battery, int channel);
 extern void adc_init(struct platform_device *pdev, struct sec_battery_info *battery);

@@ -13,7 +13,7 @@ CDTB=out/dtb;
 CAIK=AIK/split_img;
 NIMG='AIK/image-new.img';
 NAME='AEON-Q'; #FOR ZIP_NAME
-KNAME=" AEON Q v'$n' For $DEVICE By DAvinash97"
+KNAME=" AEON Q v'$n' for '$DEVICE' By DAvinash97"
 JOBS=$(($(nproc)+1))
 echo -e "\nSetting Up Environment\n"
 
@@ -293,3 +293,4 @@ do
         ;;
     esac
 done
+
