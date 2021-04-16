@@ -400,8 +400,8 @@ if [ $? != 0 -o -z "$(ls bin)" ]; then
   abort "Busybox setup failed. Aborting...";
 fi;
 
-if [ -f banner ]; then
-  ui_printfile banner;
+if [ -f AEON ]; then
+  ui_printfile AEON;
   ui_print " " " ";
 fi;
 
