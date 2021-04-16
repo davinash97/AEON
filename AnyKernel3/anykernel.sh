@@ -4,7 +4,7 @@
 ## AnyKernel setup
 # begin properties
 properties() { '
-kernel.string=Not Prish obviously by DAvinash97 @ xda-developers
+kernel.string=AEON Kernel by DAvinash97 @ xda-developers
 do.devicecheck=1
 do.modules=0
 do.systemless=1
